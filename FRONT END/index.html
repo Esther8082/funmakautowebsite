@@ -5,9 +5,13 @@
     <title>Car Shop - Home</title>
     <meta name="description" content="Funmak Auto — Buy and sell cars, auto parts, and more.">
     <meta name="google-site-verification" content="snru4pEiyWQePlw1o1Mq7KTkiML5wHikPJ0cAuNiR-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
 </head>
+
 <body>
+
     <nav>
         <a href="index.html">Home</a> |
         <a href="about.html">About</a> |
@@ -16,10 +20,154 @@
         <a href="contact.html">Contact</a>
     </nav>
 
-    <h1>Welcome to Our Car Shop</h1>
-    <p>We sell automotive parts and car paint products.</p>
-    <button onclick="window.open('https://wa.me/27710147815', '_blank')">Message Us on WhatsApp</button>
+    <!-- Hero Banner -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Funmak Auto Coatings</h1>
+            <p>Your trusted source for automotive parts, paints & coatings.</p>
+            <button onclick="window.open('https://wa.me/27710147815', '_blank')">Message Us on WhatsApp</button>
+        </div>
+    </header>
 
-    <script src="js/script.js"></script>
+
+    <!-- Automotive Parts Section -->
+    <section id="parts">
+        <h2>Automotive Parts</h2>
+        <p>Explore our wide range of quality automotive parts designed to keep your vehicle running smoothly.</p>
+
+        <div class="product-grid">
+
+            <!-- Body Parts -->
+            <div class="product-card">
+                <img src="images/bodyparts.jpg" alt="Body Parts">
+                <p>Body Parts & Lighting</p>
+            </div>
+
+            <!-- Engine Parts -->
+            <div class="product-card">
+                <img src="images/Engineparts.jpg" alt="Engine Parts">
+                <p>Engine Parts</p>
+            </div>
+
+            <!-- Suspension -->
+            <div class="product-card">
+                <img src="images/suspensionpart.jpg" alt="Suspension & Steering">
+                <p>Suspension & Steering Systems</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Paints & Coatings Section -->
+    <section id="paints">
+        <h2>Paints & Coatings</h2>
+        <p>Premium automotive paints and coatings for a flawless finish.</p>
+
+        <div class="product-slider">
+            <button class="arrow left" aria-label="Previous">&#10094;</button>
+
+            <div class="slider-viewport">
+                <div class="product-grid">
+                    <div class="product-card">
+                        <img src="images/paint/hardner/hardnercollection.jpg" alt="Hardner">
+                        <p>Hardners</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/bodyfiller/bodyfillercollection.jpg" alt="Bodyfiller">
+                        <p>Bodyfillers</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/primmer/primmercollection.jpg" alt="Primer">
+                        <p>Primers</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/plasticprimmer/plasticprimmercollection.jpg" alt="Plastic Primer">
+                        <p>Plastic Primers</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/polish/polishcollection.jpg" alt="Polish">
+                        <p>Polish</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/waterpaper/waterpapercollection.jpg" alt="Water Paper">
+                        <p>Water Papers</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/stonechip/stonechips.jpg" alt="Stone Chip">
+                        <p>Stone Chip</p>
+                    </div>
+
+                    <div class="product-card">
+                        <img src="images/paint/paint/paintbank.jpg" alt="Paint Bank">
+                        <p>Paint Bank</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="arrow right" aria-label="Next">&#10095;</button>
+        </div>
+    </section>
+
+
+    <!-- Featured Products -->
+    <section id="featured">
+        <h2>Featured Products</h2>
+        <div class="product-grid">
+
+            <!-- SPEEDCOAT Label -->
+            <div class="product-card">
+                <img src="images/FEATUREDLABLES/SPEEDCOAT.jpg" alt="SpeedCoat Label">
+                <p>SpeedCoat</p>
+            </div>
+
+            <!-- PREMCHEM Label -->
+            <div class="product-card">
+                <img src="images/FEATUREDLABLES/PREMCHEM.jpg" alt="Premchem Label">
+                <p>Premchem</p>
+            </div>
+
+            <!-- ESDEE Label -->
+            <div class="product-card">
+                <img src="images/FEATUREDLABLES/ESDEE.jpg" alt="Esdee Label">
+                <p>Esdee</p>
+            </div>
+
+            <!-- CARVELLO Label -->
+            <div class="product-card">
+                <img src="images/FEATUREDLABLES/CARVELLO.jpg" alt="Carvello Label">
+                <p>Carvello</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Funmak Auto</h2>
+        <p>
+            At Funmak Auto, we combine expertise with passion to deliver top-quality automotive parts and coatings.
+            Our mission is to provide reliable products that enhance performance and style.
+        </p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>Have questions or need assistance? Reach out to our team today.</p>
+        <button onclick="window.location.href='contact.html'">Get in Touch</button>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Funmak Auto. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-// Fetch products from backend
+﻿// Fetch products from backend
 async function fetchProducts() {
     try {
         const res = await fetch("http://localhost:5000/products");
@@ -26,13 +26,83 @@ async function fetchProducts() {
 }
 
 // Add to Cart function (stores in localStorage for now)
-function addToCart(name, price) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push({ name, price });
-    localStorage.setItem("cart", JSON.stringify(cart));
+document.addEventListener('DOMContentLoaded', () => {
 
-    alert(`${name} added to cart!`);
-}
+    const grid = document.querySelector('#paints .product-grid');
+    const cards = grid.querySelectorAll('.product-card');
+    const left = document.querySelector('#paints .arrow.left');
+    const right = document.querySelector('#paints .arrow.right');
 
-// Run fetchProducts on page load
-window.addEventListener("DOMContentLoaded", fetchProducts);
+    const cardsPerView = 4;
+    let currentPage = 0;
+    const totalPages = Math.ceil(cards.length / cardsPerView);
+
+    // ------------------------
+    // Update slider position
+    // ------------------------
+    function updateSlider() {
+        const cardWidth = cards[0].offsetWidth;
+        const gap = parseFloat(getComputedStyle(grid).gap) || 0;
+        const moveX = currentPage * (cardWidth + gap) * cardsPerView;
+        grid.style.transform = `translateX(-${moveX}px)`;
+
+        left.disabled = currentPage === 0;
+        right.disabled = currentPage === totalPages - 1;
+    }
+
+    // ------------------------
+    // Arrow buttons
+    // ------------------------
+    right.addEventListener('click', () => {
+        if (currentPage < totalPages - 1) {
+            currentPage++;
+            updateSlider();
+        }
+    });
+
+    left.addEventListener('click', () => {
+        if (currentPage > 0) {
+            currentPage--;
+            updateSlider();
+        }
+    });
+
+    // ------------------------
+    // Pointer / swipe support
+    // ------------------------
+    let startX = 0;
+    let isDragging = false;
+
+    grid.addEventListener('pointerdown', e => {
+        startX = e.clientX;
+        isDragging = true;
+        grid.setPointerCapture(e.pointerId);
+    });
+
+    grid.addEventListener('pointermove', e => {
+        if (!isDragging) return;
+        const currentX = e.clientX;
+        const diff = currentX - startX;
+        grid.style.transform = `translateX(${-currentPage * (cards[0].offsetWidth + parseFloat(getComputedStyle(grid).gap) || 0) * cardsPerView + diff}px)`;
+    });
+
+    grid.addEventListener('pointerup', e => {
+        if (!isDragging) return;
+        isDragging = false;
+        const endX = e.clientX;
+        const diff = endX - startX;
+        const threshold = 50;
+
+        if (diff < -threshold && currentPage < totalPages - 1) {
+            currentPage++;
+        } else if (diff > threshold && currentPage > 0) {
+            currentPage--;
+        }
+
+        updateSlider();
+    });
+
+    // Initialize
+    updateSlider();
+
+});
