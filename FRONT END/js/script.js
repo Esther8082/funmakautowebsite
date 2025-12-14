@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const left = document.querySelector('#paints .arrow.left');
     const right = document.querySelector('#paints .arrow.right');
 
-    const cardsPerView = 4;
+    const cardsPerView = 3;
     let currentPage = 0;
     const totalPages = Math.ceil(cards.length / cardsPerView);
 

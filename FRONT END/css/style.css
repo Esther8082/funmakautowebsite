@@ -119,6 +119,7 @@ section {
     display: flex;
     align-items: center;
     gap: 1rem;
+    position: relative;
 }
 .slider-viewport {
     overflow: hidden;
@@ -126,7 +127,7 @@ section {
     touch-action: pan-y;
 }
 .product-card {
-    flex: 0 0 calc((100% - 3 * 2rem) / 4);
+    flex: 0 0 calc((100% - 2 * 2rem) / 3);
     background: #fff;
     padding: 1rem;
     border-radius: 10px;
@@ -166,147 +167,171 @@ section {
    ARROWS STYLE
 ================================= */
 .arrow {
-    background: #1e90ff;
-    color: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.9); /* semi-transparent */
+    color: #1e90ff;
     border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
+    font-size: 1.5rem; /* small, clean */
+    padding: 0.4rem 0.7rem;
     border-radius: 50%;
-    transition: 0.3s;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: background 0.3s, color 0.3s;
 }
 
-    .arrow:hover {
-        background: #0b6fd6;
+    .arrow.left {
+        left: 0.3rem;
     }
 
-/* Mobile: show fewer per view if you want (optional) */
+    .arrow.right {
+        right: 0.3rem;
+    }
+    .arrow:hover {
+      
+        background: rgba(30, 144, 255, 0.3); /* subtle blue hover */
+        color: #0b6fd6;
+    }
+    /* Hide arrows when disabled */
+    .arrow:disabled {
+        display: none;
+    }
+
+/* ===============================
+   MOBILE / TABLET MEDIA QUERY
+================================= */
 @media (max-width: 768px) {
     .product-card {
-        flex: 0 0 calc((100% - 1 * 1rem) / 2); /* 2 per view on mobile */
-        /* adjust gap if needed */
+        flex: 0 0 calc((100% - 1 * 1rem) / 2); /* 2 cards per view */
+        padding: 0.8rem;
     }
 
     .product-grid {
-        gap: 1rem;
+        gap: 1rem; /* smaller gap on mobile */
+    }
+
+    .arrow {
+        font-size: 1.2rem;
+        padding: 0.2rem 0.4rem; /* smaller arrows on mobile */
     }
 }
-
-/* ===============================
+    /* ===============================
    FEATURED PRODUCTS SECTION
 ================================= */
-#featured {
-    background: #fff;
-    padding: 4rem 2rem;
-    text-align: center;
-}
-
-    #featured h2 {
-        font-size: 2.6rem;
-        margin-bottom: 2rem;
-        font-weight: 700;
-        color: #111;
-    }
-
-    #featured .product-grid {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        flex-wrap: wrap;
-    }
-
-    #featured .product-card {
-        width: 220px;
-        background: none;
-        border: none;
-        box-shadow: none;
-        padding: 0;
+    #featured {
+        background: #fff;
+        padding: 4rem 2rem;
         text-align: center;
     }
 
-        #featured .product-card img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            border-radius: 0;
+        #featured h2 {
+            font-size: 2.6rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            color: #111;
         }
 
-        #featured .product-card p {
-            margin-top: 0.5rem;
-            font-size: 1rem;
-            color: #333;
-            font-weight: 500;
+        #featured .product-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
         }
-/* ===============================
+
+        #featured .product-card {
+            width: 220px;
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            text-align: center;
+        }
+
+            #featured .product-card img {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+                border-radius: 0;
+            }
+
+            #featured .product-card p {
+                margin-top: 0.5rem;
+                font-size: 1rem;
+                color: #333;
+                font-weight: 500;
+            }
+    /* ===============================
    PAINTS & COATINGS SECTION
 ================================= */
-#paints {
-    background: linear-gradient(to right, #ffffff, #f0f4ff); /* subtle blue fade */
-    border-top: 2px solid #1e90ff;
-    border-bottom: 2px solid #1e90ff;
-}
+    #paints {
+        background: linear-gradient(to right, #ffffff, #f0f4ff); /* subtle blue fade */
+        border-top: 2px solid #1e90ff;
+        border-bottom: 2px solid #1e90ff;
+    }
 
-/* ===============================
+    /* ===============================
    ABOUT SECTION
 ================================= */
-#about {
-    background: #fff;
-    padding: 4rem 3rem;
-    border-radius: 10px;
-    width: 85%;
-    margin: auto;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-}
+    #about {
+        background: #fff;
+        padding: 4rem 3rem;
+        border-radius: 10px;
+        width: 85%;
+        margin: auto;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    }
 
-/* ===============================
+    /* ===============================
    CONTACT SECTION
 ================================= */
-#contact button {
-    background: #1e90ff;
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    font-size: 1.1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-    #contact button:hover {
-        background: #0b6fd6;
+    #contact button {
+        background: #1e90ff;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
     }
 
-/* ===============================
+        #contact button:hover {
+            background: #0b6fd6;
+        }
+
+    /* ===============================
    FOOTER
 ================================= */
-footer {
-    background: #0d0f11;
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: 4rem;
-    border-top: 2px solid #1e90ff;
-}
+    footer {
+        background: #0d0f11;
+        color: white;
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 4rem;
+        border-top: 2px solid #1e90ff;
+    }
 
-/* ===============================
+    /* ===============================
    RESPONSIVE DESIGN
 ================================= */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.4rem;
-    }
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 2.4rem;
+        }
 
-    .hero p {
-        font-size: 1rem;
-    }
+        .hero p {
+            font-size: 1rem;
+        }
 
-    .product-card {
-        width: 90%;
-    }
+        .product-card {
+            width: 90%;
+        }
 
-    nav a {
-        display: inline-block;
-        margin: 0.5rem;
+        nav a {
+            display: inline-block;
+            margin: 0.5rem;
+        }
     }
-}
