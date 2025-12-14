@@ -69,31 +69,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ------------------------
-    // Pointer / swipe support
+    // Pointer / swipe support (fixed for multiple swipes)
     // ------------------------
     let startX = 0;
     let isDragging = false;
+    let startTranslate = 0; // stores the starting transform position
 
     grid.addEventListener('pointerdown', e => {
         startX = e.clientX;
         isDragging = true;
+
+        // Get current translateX from the grid's transform
+        const style = window.getComputedStyle(grid);
+        const matrix = new WebKitCSSMatrix(style.transform); // works in most browsers
+        startTranslate = matrix.m41; // current translateX
+
         grid.setPointerCapture(e.pointerId);
     });
 
     grid.addEventListener('pointermove', e => {
         if (!isDragging) return;
+
         const currentX = e.clientX;
         const diff = currentX - startX;
-        grid.style.transform = `translateX(${-currentPage * (cards[0].offsetWidth + parseFloat(getComputedStyle(grid).gap) || 0) * cardsPerView + diff}px)`;
+
+        // Move the grid relative to the starting translate
+        grid.style.transform = `translateX(${startTranslate + diff}px)`;
     });
 
     grid.addEventListener('pointerup', e => {
         if (!isDragging) return;
         isDragging = false;
+
         const endX = e.clientX;
         const diff = endX - startX;
-        const threshold = 50;
+        const threshold = 50; // minimum px to count as a swipe
 
+        const cardWidth = cards[0].offsetWidth + (parseFloat(getComputedStyle(grid).gap) || 0);
+
+        // Determine how many pages to move based on drag distance
         if (diff < -threshold && currentPage < totalPages - 1) {
             currentPage++;
         } else if (diff > threshold && currentPage > 0) {
@@ -103,7 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSlider();
     });
 
-    // Initialize
-    updateSlider();
+    // Optional: handle pointer leaving the grid area
+    grid.addEventListener('pointerleave', e => {
+        if (!isDragging) return;
+        isDragging = false;
 
-});
+        updateSlider();
+    });
