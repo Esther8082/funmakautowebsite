@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // ------------------------
     // Pointer / swipe support
     // ------------------------
