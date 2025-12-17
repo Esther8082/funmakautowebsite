@@ -25,102 +25,61 @@ async function fetchProducts() {
     }
 }
 
-// Add to Cart function (stores in localStorage for now)
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+    const viewport = document.querySelector("#paints .slider-viewport");
+    const grid = document.querySelector("#paints .product-grid");
+    const left = document.querySelector("#paints .arrow.left");
+    const right = document.querySelector("#paints .arrow.right");
 
-    const grid = document.querySelector('#paints .product-grid');
-    const cards = grid.querySelectorAll('.product-card');
-    const left = document.querySelector('#paints .arrow.left');
-    const right = document.querySelector('#paints .arrow.right');
+    if (!viewport || !grid) return;
 
-    const cardsPerView = 3;
-    let currentPage = 0;
-    const totalPages = Math.ceil(cards.length / cardsPerView);
-
-    // ------------------------
-    // Update slider position
-    // ------------------------
-    function updateSlider() {
-        const cardWidth = cards[0].offsetWidth;
+    function getCardWidth() {
+        const card = grid.querySelector(".product-card");
         const gap = parseFloat(getComputedStyle(grid).gap) || 0;
-        const moveX = currentPage * (cardWidth + gap) * cardsPerView;
-        grid.style.transform = `translateX(-${moveX}px)`;
-
-        left.disabled = currentPage === 0;
-        right.disabled = currentPage === totalPages - 1;
+        return card.offsetWidth + gap;
     }
 
-    // ------------------------
-    // Arrow buttons
-    // ------------------------
-    right.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) {
-            currentPage++;
-            updateSlider();
+    // -------- ARROWS --------
+    left.addEventListener("click", () => {
+        viewport.scrollLeft -= getCardWidth();
+        resetAutoPlay();
+    });
+
+    right.addEventListener("click", () => {
+        viewport.scrollLeft += getCardWidth();
+        resetAutoPlay();
+    });
+
+    // -------- AUTO PLAY --------
+    let autoPlay = setInterval(() => slideRight(), 2000);
+
+    function slideRight() {
+        if (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 5) {
+            viewport.scrollLeft = 0;
+        } else {
+            viewport.scrollLeft += getCardWidth();
         }
+    }
+
+    function resetAutoPlay() {
+        clearInterval(autoPlay);
+        autoPlay = setInterval(() => slideRight(), 2000);
+    }
+
+    // -------- PAUSE ON HOVER / TOUCH --------
+    viewport.addEventListener("mouseenter", () => clearInterval(autoPlay));
+    viewport.addEventListener("mouseleave", resetAutoPlay);
+
+    viewport.addEventListener("touchstart", () => clearInterval(autoPlay), { passive: true });
+    viewport.addEventListener("touchend", resetAutoPlay);
+
+    // -------- PAUSE ON MANUAL SCROLL --------
+    let scrollTimeout;
+    viewport.addEventListener("scroll", () => {
+        clearInterval(autoPlay);          // pause autoplay
+        clearTimeout(scrollTimeout);      // clear previous timeout
+        scrollTimeout = setTimeout(() => { // restart after user stops scrolling
+            resetAutoPlay();
+        }, 1500); // 1.5s after user stops
     });
-
-    left.addEventListener('click', () => {
-        if (currentPage > 0) {
-            currentPage--;
-            updateSlider();
-        }
-    });
-
-
-    // ------------------------
-    // Pointer / swipe support (fixed for multiple swipes)
-    // ------------------------
-    let startX = 0;
-    let isDragging = false;
-    let startTranslate = 0; // stores the starting transform position
-
-    grid.addEventListener('pointerdown', e => {
-        startX = e.clientX;
-        isDragging = true;
-
-        // Get current translateX from the grid's transform
-        const style = window.getComputedStyle(grid);
-        const matrix = new WebKitCSSMatrix(style.transform); // works in most browsers
-        startTranslate = matrix.m41; // current translateX
-
-        grid.setPointerCapture(e.pointerId);
-    });
-
-    grid.addEventListener('pointermove', e => {
-        if (!isDragging) return;
-
-        const currentX = e.clientX;
-        const diff = currentX - startX;
-
-        // Move the grid relative to the starting translate
-        grid.style.transform = `translateX(${startTranslate + diff}px)`;
-    });
-
-    grid.addEventListener('pointerup', e => {
-        if (!isDragging) return;
-        isDragging = false;
-
-        const endX = e.clientX;
-        const diff = endX - startX;
-        const threshold = 50; // minimum px to count as a swipe
-
-        const cardWidth = cards[0].offsetWidth + (parseFloat(getComputedStyle(grid).gap) || 0);
-
-        // Determine how many pages to move based on drag distance
-        if (diff < -threshold && currentPage < totalPages - 1) {
-            currentPage++;
-        } else if (diff > threshold && currentPage > 0) {
-            currentPage--;
-        }
-
-        updateSlider();
-    });
-
-    // Optional: handle pointer leaving the grid area
-    grid.addEventListener('pointerleave', e => {
-        if (!isDragging) return;
-        isDragging = false;
-
-        updateSlider();
-    });
+});
