@@ -11,13 +11,20 @@
 </head>
 
 <body>
+    <nav class="top-nav glass-nav">
+        <div class="nav-container">
+            <div class="logo">
+                Funmak<span>Auto</span>
+            </div>
 
-    <nav>
-        <a href="index.html">Home</a> |
-        <a href="about.html">About</a> |
-        <a href="products.html">Products</a> |
-        <a href="cart.html">Cart</a> |
-        <a href="contact.html">Contact</a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="about.html">About</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+                <a href="contact.html" class="nav-btn">Contact</a>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Banner -->
@@ -35,29 +42,42 @@
         <h2>Automotive Parts</h2>
         <p>Explore our wide range of quality automotive parts designed to keep your vehicle running smoothly.</p>
 
-        <div class="product-grid">
+        <div class="product-slider">
+            <button class="arrow left" aria-label="Previous">&#10094;</button>
 
-            <!-- Body Parts -->
-            <div class="product-card">
-                <img src="images/bodyparts.jpg" alt="Body Parts">
-                <p>Body Parts & Lighting</p>
+            <div class="slider-viewport">
+                <div class="product-grid">
+                    <!-- product-card items -->
+                    <div class="product-card">
+                        <img src="images/carpart/suspension.jpg" alt="Body Parts">
+                        <p>Body Parts & Lighting</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="images/carpart/cvjoint.jpg" alt="Engine Parts">
+                        <p>Engine Parts</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="images/carpart/sparkplug.jpg" alt="Suspension & Steering">
+                        <p>Suspension & Steering Systems</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="images/carpart/termostathousing.jpg" alt="Thermostat Housing">
+                        <p>Thermostat Housing</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="images/carpart/ringsqueezer.jpg" alt="Ring Squeezer">
+                        <p>Ring Squeezer</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="images/carpart/oilfilter.jpg" alt="Oil Filter">
+                        <p>Oil Filter</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Engine Parts -->
-            <div class="product-card">
-                <img src="images/Engineparts.jpg" alt="Engine Parts">
-                <p>Engine Parts</p>
-            </div>
-
-            <!-- Suspension -->
-            <div class="product-card">
-                <img src="images/suspensionpart.jpg" alt="Suspension & Steering">
-                <p>Suspension & Steering Systems</p>
-            </div>
-
+            <button class="arrow right" aria-label="Next">&#10095;</button>
         </div>
     </section>
-
 
     <!-- Paints & Coatings Section -->
     <section id="paints">
@@ -108,6 +128,7 @@
             <button class="arrow right" aria-label="Next">&#10095;</button>
         </div>
     </section>
+
 
     <!-- Featured Products -->
     <section id="featured">

@@ -26,60 +26,89 @@ async function fetchProducts() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const viewport = document.querySelector("#paints .slider-viewport");
-    const grid = document.querySelector("#paints .product-grid");
-    const left = document.querySelector("#paints .arrow.left");
-    const right = document.querySelector("#paints .arrow.right");
 
-    if (!viewport || !grid) return;
+    function initSlider(sliderId, autoPlayTime = 2000) {
+        const slider = document.querySelector(`#${sliderId} .product-slider`);
+        if (!slider) return;
 
-    function getCardWidth() {
-        const card = grid.querySelector(".product-card");
-        const gap = parseFloat(getComputedStyle(grid).gap) || 0;
-        return card.offsetWidth + gap;
-    }
+        const viewport = slider.querySelector(".slider-viewport");
+        const grid = slider.querySelector(".product-grid");
+        const left = slider.querySelector(".arrow.left");
+        const right = slider.querySelector(".arrow.right");
 
-    // -------- ARROWS --------
-    left.addEventListener("click", () => {
-        viewport.scrollLeft -= getCardWidth();
-        resetAutoPlay();
-    });
+        if (!viewport || !grid || !left || !right) return;
 
-    right.addEventListener("click", () => {
-        viewport.scrollLeft += getCardWidth();
-        resetAutoPlay();
-    });
-
-    // -------- AUTO PLAY --------
-    let autoPlay = setInterval(() => slideRight(), 2000);
-
-    function slideRight() {
-        if (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 5) {
-            viewport.scrollLeft = 0;
-        } else {
-            viewport.scrollLeft += getCardWidth();
+        function getCardWidth() {
+            const card = grid.querySelector(".product-card");
+            const gap = parseFloat(getComputedStyle(grid).gap) || 0;
+            return card.offsetWidth + gap;
         }
-    }
 
-    function resetAutoPlay() {
-        clearInterval(autoPlay);
-        autoPlay = setInterval(() => slideRight(), 2000);
-    }
-
-    // -------- PAUSE ON HOVER / TOUCH --------
-    viewport.addEventListener("mouseenter", () => clearInterval(autoPlay));
-    viewport.addEventListener("mouseleave", resetAutoPlay);
-
-    viewport.addEventListener("touchstart", () => clearInterval(autoPlay), { passive: true });
-    viewport.addEventListener("touchend", resetAutoPlay);
-
-    // -------- PAUSE ON MANUAL SCROLL --------
-    let scrollTimeout;
-    viewport.addEventListener("scroll", () => {
-        clearInterval(autoPlay);          // pause autoplay
-        clearTimeout(scrollTimeout);      // clear previous timeout
-        scrollTimeout = setTimeout(() => { // restart after user stops scrolling
+        // -------- ARROWS --------
+        left.addEventListener("click", () => {
+            viewport.scrollLeft -= getCardWidth();
             resetAutoPlay();
-        }, 1500); // 1.5s after user stops
-    });
+        });
+
+        right.addEventListener("click", () => {
+            viewport.scrollLeft += getCardWidth();
+            resetAutoPlay();
+        });
+
+        // -------- AUTO PLAY --------
+        let autoPlay = setInterval(slideRight, autoPlayTime);
+
+        function slideRight() {
+            if (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 5) {
+                viewport.scrollLeft = 0;
+            } else {
+                viewport.scrollLeft += getCardWidth();
+            }
+            updateArrowsVisibility();
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlay);
+            autoPlay = setInterval(slideRight, autoPlayTime);
+        }
+
+        // -------- PAUSE ON HOVER / TOUCH --------
+        viewport.addEventListener("mouseenter", () => clearInterval(autoPlay));
+        viewport.addEventListener("mouseleave", resetAutoPlay);
+        viewport.addEventListener("touchstart", () => clearInterval(autoPlay), { passive: true });
+        viewport.addEventListener("touchend", resetAutoPlay);
+
+        // -------- PAUSE ON MANUAL SCROLL --------
+        let scrollTimeout;
+        viewport.addEventListener("scroll", () => {
+            clearInterval(autoPlay);
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => resetAutoPlay(), 1500);
+            updateArrowsVisibility();
+        });
+
+        // -------- SHOW / HIDE ARROWS --------
+        function updateArrowsVisibility() {
+            if (viewport.scrollLeft <= 0) {
+                left.classList.add("hidden");
+            } else {
+                left.classList.remove("hidden");
+            }
+
+            if (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 5) {
+                right.classList.add("hidden");
+            } else {
+                right.classList.remove("hidden");
+            }
+        }
+
+        // Initialize arrow visibility
+        updateArrowsVisibility();
+        // Recalculate on window resize
+        window.addEventListener("resize", updateArrowsVisibility);
+    }
+
+    // Initialize sliders
+    initSlider("paints", 2000); // Paints & Coatings
+    initSlider("parts", 2000);  // Automotive Parts
 });
